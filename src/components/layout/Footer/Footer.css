@@ -1,0 +1,8 @@
+.Footer {
+  flex-basis: 7.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #345345;
+  color: #ddd;
+}

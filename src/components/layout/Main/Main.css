@@ -1,0 +1,6 @@
+.Main {
+  flex-grow: 1;
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+}

@@ -1,0 +1,12 @@
+.Header {
+  flex-basis: 12.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #aaa; */
+}
+
+.Header__Title {
+  font-size: 3rem;
+  letter-spacing: 5px;
+}
