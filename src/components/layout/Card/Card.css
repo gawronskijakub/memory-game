@@ -1,0 +1,38 @@
+.Card {
+  position: relative;
+  /* border: 1px solid #000; */
+  pointer-events: auto;
+}
+
+.Card.Blocked {
+  pointer-events: none;
+}
+
+.Card__Side {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform .5s;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.Card__Side--Back {
+  transform: rotateY(180deg);
+  background-color: purple;
+}
+
+.Card__Side--Back.Active {
+  transform: rotateY(0);
+}
+
+.Card__Side--Front {
+  transform: rotateY(180deg);
+  background-color: lightgreen;
+}
+
+.Card__Side--Front.Active {
+  transform: rotateY(0);
+}
