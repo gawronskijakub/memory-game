@@ -1,8 +1,21 @@
 import React from "react";
+import { useSharedResult } from "../Card/Card";
 import "./Aside.css";
 
 const Aside = () => {
-  return <aside className="Aside"></aside>;
+  const { win, score } = useSharedResult();
+  let content = "In progress...";
+
+  if (win) {
+    content = "Congratulations!";
+  }
+
+  return (
+    <aside className="Aside">
+      <p>Score: {score}</p>
+      <p>{content}</p>
+    </aside>
+  );
 };
 
 export default Aside;

@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
+import { useBetween } from "use-between";
 import { toggleClass } from "./../../../shared/functions";
 import "./Card.css";
 
 let currentCards = [];
 let currentProps = [];
 
+let correctCards = [];
+
+const useResult = () => {
+  const [win, setWin] = useState(false);
+  const [score, setScore] = useState(0);
+  const addScore = useCallback(() => setScore(score + 1000), [score]);
+  return { win, setWin, score, addScore };
+};
+
+/*
+  use shared state between components
+  allow siblings access common state without need to re-render the Board
+  (and so, avoid re-shuffling the Board component)
+*/
+const useSharedResult = () => useBetween(useResult);
+
 const Card = props => {
+  const { setWin, score, addScore } = useSharedResult();
+
   const clearChoice = () => {
     currentCards = [];
     currentProps = [];
@@ -28,25 +47,36 @@ const Card = props => {
 
     toggleClass(card, "Blocked");
 
-    console.log(currentProps);
-
     if (currentCards.length === 2) {
-      check(e);
+      check();
     }
   };
 
-  const check = e => {
+  const check = () => {
     if (currentProps[0].data === currentProps[1].data) {
-      console.log("yep");
+      correctCards = correctCards.concat(currentCards);
+      addScore();
     } else {
       for (const card of currentCards) {
+        // rotate cards after a delay (800ms)
         setTimeout(() => {
           rotateCard(card);
-          toggleClass(card, "Blocked");
         }, 800);
+
+        /*
+          remove blockade after (delay + backup) time
+          to avoid clicking on cards during their' transitions
+        */
+        setTimeout(() => {
+          toggleClass(card, "Blocked");
+        }, 1000);
       }
     }
     clearChoice();
+
+    if (correctCards.length === 10) {
+      setWin(true);
+    }
   };
 
   return (
@@ -63,4 +93,5 @@ const Card = props => {
   );
 };
 
+export { useSharedResult };
 export default Card;

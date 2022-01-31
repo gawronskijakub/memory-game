@@ -9,7 +9,7 @@ const Footer = () => {
         <a className="Copyright__Link" href="https://github.com/gawronskijakub">
           Jakub Gawronski
         </a>{" "}
-        | with ❤️ and{" "}
+        2022 | with ❤️ and{" "}
         <a className="Copyright__Link" href="https://create-react-app.dev/">
           create-react-app
         </a>{" "}
