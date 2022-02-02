@@ -4,55 +4,61 @@ import { toggleClass, rotateCard } from "./../../../shared/functions";
 import "./Card.css";
 
 let currentCards = [];
-let currentProps = [];
 
-let correctCards = [];
+let result = [];
+
+let currentChoice = {};
+let currData1, currData2;
 
 // clear current choice
 const clearCurrentChoice = () => {
   currentCards = [];
-  currentProps = [];
+  currentChoice = {};
 };
 
+// used to restart the game
 const clearWholeChoice = () => {
   clearCurrentChoice();
-  correctCards = [];
+  result = [];
 };
 
 const useResult = () => {
   const [win, setWin] = useState(false);
   const [score, setScore] = useState(0);
-  const addScore = useCallback(() => setScore(score + 50), [score]);
-  return { win, setWin, score, addScore, setScore };
+  const [measuring, setMeasuring] = useState(false);
+  const addScore = useCallback(() => setScore(score + 10), [score]);
+  return { win, setWin, score, addScore, setScore, measuring, setMeasuring };
 };
 
 /*
   use shared state between components
-  allow siblings access common state without need to re-render the Board
+  allow siblings access common state without need to re-render their common ancestor - Main
   (and so, avoid re-shuffling the Board component)
 */
 const useSharedResult = () => useBetween(useResult);
 
 const Card = props => {
-  const { setWin, addScore } = useSharedResult();
+  const { setWin, addScore, measuring, setMeasuring } = useSharedResult();
 
-  const currentChoice = e => {
+  const currentChoiceHandler = e => {
+    if (!measuring) setMeasuring(true);
     const card = e.target.parentNode;
-    currentProps.push(props);
     currentCards.push(card);
-
+    currentChoice[props.no] = props.data;
     // block cards after choosing to disable pointer-events
     toggleClass(card, "Blocked");
-
+    // perform a check only when 2 cards are currently selected
     if (currentCards.length === 2) {
       check();
     }
   };
 
   const check = () => {
-    // check if corresponding attributes are equal
-    if (currentProps[0].data === currentProps[1].data) {
-      correctCards = correctCards.concat(currentCards);
+    [currData1, currData2] = Object.values(currentChoice);
+    // check if corresponding data attributes are equal
+    if (currData1 === currData2) {
+      // add correct cards to our result
+      result = [...result, ...currentCards];
       addScore();
     } else {
       for (const card of currentCards) {
@@ -60,7 +66,6 @@ const Card = props => {
         setTimeout(() => {
           rotateCard(card);
         }, 800);
-
         /*
           remove blockade after (delay + backup) time
           to avoid clicking on cards during their' transitions
@@ -73,7 +78,7 @@ const Card = props => {
 
     clearCurrentChoice();
 
-    if (correctCards.length === 10) {
+    if (result.length === 10) {
       setWin(true);
     }
   };
@@ -83,7 +88,7 @@ const Card = props => {
       className="Card"
       onClick={e => {
         rotateCard(e);
-        currentChoice(e);
+        currentChoiceHandler(e);
       }}
     >
       <div className="Card__Side Card__Side--Back Active"></div>
@@ -92,5 +97,5 @@ const Card = props => {
   );
 };
 
-export { useSharedResult, clearWholeChoice };
+export { useSharedResult, clearWholeChoice, result };
 export default Card;

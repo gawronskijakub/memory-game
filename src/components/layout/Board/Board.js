@@ -8,7 +8,7 @@ const Board = () => {
 
   const fillBoard = size => {
     for (let i = 1; i <= size; i++) {
-      cards.push(<Card key={i} data={data} name={i} />);
+      cards.push(<Card key={i} data={data} no={i} />);
 
       if (i % 2 === 0) {
         data++;
