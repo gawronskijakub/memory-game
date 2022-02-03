@@ -18,6 +18,7 @@ const Board = () => {
 
   fillBoard(40);
 
+  // array shuffling algorithm from https://stackoverflow.com/a/46545530/12787866
   const shuffleBoard = arr => {
     return arr
       .map(value => ({ value, sort: Math.random() }))

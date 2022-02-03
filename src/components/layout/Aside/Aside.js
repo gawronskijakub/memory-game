@@ -7,19 +7,27 @@ let time = 0;
 let elapsedID;
 
 const Aside = props => {
-  const { win, score, setWin, setScore, measuring, setMeasuring } =
-    useSharedResult();
+  const {
+    win,
+    score,
+    setWin,
+    setScore,
+    measuring,
+    setMeasuring,
+    status,
+    setStatus
+  } = useSharedResult();
   const [attempt, setAttempt] = props.attemptState;
 
   const timeValue = document.querySelector(".Time__Value");
 
-  let status = "in progress...";
-
   if (win) {
-    status = "congratulations!";
+    clearInterval(elapsedID);
+    setStatus("Finished!");
   }
 
   const restartGame = () => {
+    // re-rotate all that have been already chosen
     const cards = document.querySelectorAll(".Card");
     cards.forEach(card => {
       if (card.classList.contains("Blocked")) {
@@ -28,17 +36,21 @@ const Aside = props => {
       }
     });
 
+    // reset points only if checkbox is checked
     const input = document.querySelector(".Input");
     if (input.checked) {
       setScore(0);
     }
 
+    // reset time measuring
     time = 0;
     timeValue.textContent = "0 seconds";
     setMeasuring(false);
     elapsedID = false;
 
+    // clear current choice and result from current (aka previous) game
     clearWholeChoice();
+    setStatus("Not playing");
     setAttempt(attempt + 1);
     setWin(false);
   };
@@ -47,13 +59,10 @@ const Aside = props => {
     timeValue.textContent = `${time++} seconds`;
   };
 
+  // start measuring only once
   if (measuring && !elapsedID) {
     updateTime();
     elapsedID = setInterval(updateTime, 1000);
-  }
-
-  if (result.length === 40) {
-    clearInterval(elapsedID);
   }
 
   return (

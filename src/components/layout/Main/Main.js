@@ -4,6 +4,7 @@ import Aside from "../Aside/Aside";
 import "./Main.css";
 
 const Main = () => {
+  // attempt state declared here -> re-rendering main reshuffles the board
   const [attempt, setAttempt] = useState(1);
   return (
     <main className="Main">

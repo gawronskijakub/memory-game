@@ -1,14 +1,14 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useBetween } from "use-between";
 import { toggleClass, rotateCard } from "./../../../shared/functions";
 import "./Card.css";
 
+// current DOM nodes
 let currentCards = [];
-
-let result = [];
-
+// current props from chosen cards
 let currentChoice = {};
-let currData1, currData2;
+// all correct chosen cards during one game
+let result = [];
 
 // clear current choice
 const clearCurrentChoice = () => {
@@ -22,12 +22,22 @@ const clearWholeChoice = () => {
   result = [];
 };
 
+// custom hook for state shared between sibling components
 const useResult = () => {
   const [win, setWin] = useState(false);
   const [score, setScore] = useState(0);
   const [measuring, setMeasuring] = useState(false);
-  const addScore = useCallback(() => setScore(score + 10), [score]);
-  return { win, setWin, score, addScore, setScore, measuring, setMeasuring };
+  const [status, setStatus] = useState("Not playing");
+  return {
+    win,
+    setWin,
+    score,
+    setScore,
+    measuring,
+    setMeasuring,
+    status,
+    setStatus
+  };
 };
 
 /*
@@ -38,10 +48,15 @@ const useResult = () => {
 const useSharedResult = () => useBetween(useResult);
 
 const Card = props => {
-  const { setWin, addScore, measuring, setMeasuring } = useSharedResult();
+  const { setWin, score, setScore, measuring, setMeasuring, setStatus } =
+    useSharedResult();
 
   const currentChoiceHandler = e => {
-    if (!measuring) setMeasuring(true);
+    // start measuring time only after first card has been chosen in current game
+    if (!measuring) {
+      setStatus("In progress...");
+      setMeasuring(true);
+    }
     const card = e.target.parentNode;
     currentCards.push(card);
     currentChoice[props.no] = props.data;
@@ -54,12 +69,12 @@ const Card = props => {
   };
 
   const check = () => {
-    [currData1, currData2] = Object.values(currentChoice);
+    const [currData1, currData2] = Object.values(currentChoice);
     // check if corresponding data attributes are equal
     if (currData1 === currData2) {
-      // add correct cards to our result
+      // update result
       result = [...result, ...currentCards];
-      addScore();
+      setScore(score + 10);
     } else {
       for (const card of currentCards) {
         // rotate cards after a delay (800ms)
@@ -67,7 +82,7 @@ const Card = props => {
           rotateCard(card);
         }, 800);
         /*
-          remove blockade after (delay + backup) time
+          unblock both cards after (delay + backup) time
           to avoid clicking on cards during their' transitions
         */
         setTimeout(() => {
