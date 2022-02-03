@@ -78,7 +78,7 @@ const Card = props => {
 
     clearCurrentChoice();
 
-    if (result.length === 10) {
+    if (result.length === 40) {
       setWin(true);
     }
   };
