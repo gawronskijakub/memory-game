@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React from "react";
 import { useSharedResult, clearWholeChoice, result } from "../Card/Card";
 import { toggleClass, rotateCard } from "../../../shared/functions";
 import "./Aside.css";
@@ -11,7 +11,7 @@ const Aside = props => {
     useSharedResult();
   const [attempt, setAttempt] = props.attemptState;
 
-  const timeEl = document.querySelector(".Aside__Time");
+  const timeValue = document.querySelector(".Time__Value");
 
   let status = "in progress...";
 
@@ -28,15 +28,15 @@ const Aside = props => {
       }
     });
 
-    const input = document.querySelector(".Aside__Input");
+    const input = document.querySelector(".Input");
     if (input.checked) {
       setScore(0);
     }
 
     time = 0;
-    timeEl.textContent = "Time: 0 seconds";
+    timeValue.textContent = "0 seconds";
     setMeasuring(false);
-    elapsedID = undefined;
+    elapsedID = false;
 
     clearWholeChoice();
     setAttempt(attempt + 1);
@@ -44,7 +44,7 @@ const Aside = props => {
   };
 
   const updateTime = () => {
-    timeEl.textContent = `Time: ${time++} seconds`;
+    timeValue.textContent = `${time++} seconds`;
   };
 
   if (measuring && !elapsedID) {
@@ -52,28 +52,32 @@ const Aside = props => {
     elapsedID = setInterval(updateTime, 1000);
   }
 
-  if (result.length === 10) {
+  if (result.length === 40) {
     clearInterval(elapsedID);
   }
 
   return (
     <aside className="Aside">
-      <p className="Aside__Score">Score: {score}</p>
-      <p className="Aside__Status">Status: {status}</p>
-      <p className="Aside__Time">Time: 0 seconds</p>
-      <p className="Aside__Attempts">Current attempt: {attempt}</p>
-      <button onClick={restartGame} className="Aside__Button" id="Restart-Game">
-        Restart game
-      </button>
-      <label htmlFor="Reset-Points" className="Aside__Label">
+      <p className="Score">Score:</p>
+      <p className="Score__Value">{score}</p>
+      <p className="Status">Status:</p>
+      <p className="Status__Value">{status}</p>
+      <p className="Time">Time:</p>
+      <p className="Time__Value">0 seconds</p>
+      <p className="Attempts">Current attempt:</p>
+      <p className="Attempts__Value">{attempt}</p>
+      <label htmlFor="Reset-Points" className="Label">
         Reset points after restart?
         <input
           type="checkbox"
           id="Reset-Points"
-          className="Aside__Input"
+          className="Input"
           key={attempt}
         />
       </label>
+      <button onClick={restartGame} className="Button" id="Restart-Game">
+        Restart game
+      </button>
     </aside>
   );
 };

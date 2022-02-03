@@ -1,10 +1,9 @@
 .Board {
   flex-grow: 1;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   gap: 1rem;
   height: 100%;
   user-select: none;
-  /* border: 1px solid #000; */
 }

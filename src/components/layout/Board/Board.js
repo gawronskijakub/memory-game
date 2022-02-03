@@ -16,7 +16,7 @@ const Board = () => {
     }
   };
 
-  fillBoard(10);
+  fillBoard(40);
 
   const shuffleBoard = arr => {
     return arr
