@@ -1,6 +1,6 @@
 import React from "react";
-import { useSharedResult, clearWholeChoice, result } from "../Card/Card";
-import { toggleClass, rotateCard } from "../../../shared/functions";
+import { useSharedResult, clearWholeChoice } from "../Card/Card";
+import rotateCard from "../../../shared/rotateCard";
 import "./Aside.css";
 
 let time = 0;
@@ -32,12 +32,12 @@ const Aside = props => {
     cards.forEach(card => {
       if (card.classList.contains("Blocked")) {
         rotateCard(card);
-        toggleClass(card, "Blocked");
+        card.classList.toggle("Blocked");
       }
     });
 
     // reset points only if checkbox is checked
-    const input = document.querySelector(".Input");
+    const input = document.querySelector(".Input--Checkbox");
     if (input.checked) {
       setScore(0);
     }
@@ -56,7 +56,8 @@ const Aside = props => {
   };
 
   const updateTime = () => {
-    timeValue.textContent = `${time++} seconds`;
+    timeValue.textContent = `${time} seconds`;
+    time++;
   };
 
   // start measuring only once
@@ -80,7 +81,7 @@ const Aside = props => {
         <input
           type="checkbox"
           id="Reset-Points"
-          className="Input"
+          className="Input--Checkbox"
           key={attempt}
         />
       </label>

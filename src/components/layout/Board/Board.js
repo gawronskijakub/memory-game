@@ -8,7 +8,7 @@ const Board = () => {
 
   const fillBoard = size => {
     for (let i = 1; i <= size; i++) {
-      cards.push(<Card key={i} data={data} no={i} />);
+      cards.push(<Card key={i} data={data} order={i} />);
 
       if (i % 2 === 0) {
         data++;
@@ -18,7 +18,6 @@ const Board = () => {
 
   fillBoard(40);
 
-  // array shuffling algorithm from https://stackoverflow.com/a/46545530/12787866
   const shuffleBoard = arr => {
     return arr
       .map(value => ({ value, sort: Math.random() }))

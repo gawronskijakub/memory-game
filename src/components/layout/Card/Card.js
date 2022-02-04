@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useBetween } from "use-between";
-import { toggleClass, rotateCard } from "./../../../shared/functions";
+import rotateCard from "../../../shared/rotateCard";
 import "./Card.css";
 
 // current DOM nodes
@@ -59,9 +59,9 @@ const Card = props => {
     }
     const card = e.target.parentNode;
     currentCards.push(card);
-    currentChoice[props.no] = props.data;
+    currentChoice[props.order] = props.data;
     // block cards after choosing to disable pointer-events
-    toggleClass(card, "Blocked");
+    card.classList.toggle("Blocked");
     // perform a check only when 2 cards are currently selected
     if (currentCards.length === 2) {
       check();
@@ -86,7 +86,7 @@ const Card = props => {
           to avoid clicking on cards during their' transitions
         */
         setTimeout(() => {
-          toggleClass(card, "Blocked");
+          card.classList.toggle("Blocked");
         }, 1000);
       }
     }

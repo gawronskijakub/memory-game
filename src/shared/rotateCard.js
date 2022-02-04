@@ -1,7 +1,3 @@
-const toggleClass = (el, name) => {
-  el.classList.toggle(name);
-};
-
 const rotateCard = e => {
   /*
     assignment used to distinguish between
@@ -11,9 +7,9 @@ const rotateCard = e => {
 
   if (card.className.includes("Card")) {
     for (const side of card.children) {
-      toggleClass(side, "Active");
+      side.classList.toggle("Active");
     }
   }
 };
 
-export { toggleClass, rotateCard };
+export default rotateCard;
