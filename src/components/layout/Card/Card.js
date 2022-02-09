@@ -51,8 +51,6 @@ const useResult = () => {
 const useSharedResult = () => useBetween(useResult);
 
 const Card = props => {
-  const [ex, setEx] = props.exState;
-
   const { setWin, score, setScore, measuring, setMeasuring, setStatus } =
     useSharedResult();
 
@@ -60,15 +58,13 @@ const Card = props => {
 
   const currentChoiceHandler = e => {
     // start measuring time only after first card has been chosen in current game
-    // setEx(ex + 1);
-    // console.log(ex);
     if (!measuring) {
       setStatus("In progress...");
       setMeasuring(true);
     }
     const card = e.target.parentNode;
     currentCards.push(card);
-    currentChoice[props.order] = props.data;
+    currentChoice[props.id] = props.data;
     // block cards after choosing to disable pointer-events
     card.classList.toggle("Blocked");
     // perform a check only when 2 cards are currently selected

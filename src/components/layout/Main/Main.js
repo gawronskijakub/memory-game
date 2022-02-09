@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { createContext, useState } from "react";
 import Board from "../Board/Board";
 import Aside from "../Aside/Aside";
 import "./Main.css";
+
+export const CardsContext = createContext([]);
+const CardsProvider = CardsContext.Provider;
 
 const Main = () => {
   // attempt state declared here to re-shuffle the Board every time game is restarted
@@ -23,8 +26,10 @@ const Main = () => {
 
   return (
     <main className="Main">
-      <Board rotateCard={rotateCard} />
-      <Aside rotateCard={rotateCard} attemptState={[attempt, setAttempt]} />
+      <CardsProvider value={[]}>
+        <Board rotateCard={rotateCard} />
+        <Aside rotateCard={rotateCard} attemptState={[attempt, setAttempt]} />
+      </CardsProvider>
     </main>
   );
 };

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useSharedResult, clearWholeChoice } from "../Card/Card";
+import { CardsContext } from "../Main/Main";
 import "./Aside.css";
 
 let time = 0;
@@ -17,6 +18,8 @@ const Aside = props => {
     setStatus
   } = useSharedResult();
   const [attempt, setAttempt] = props.attemptState;
+
+  const Cards = useContext(CardsContext);
 
   const rotateCard = props.rotateCard;
 
@@ -60,6 +63,7 @@ const Aside = props => {
   const updateTime = () => {
     timeValue.textContent = `${time} seconds`;
     time++;
+    
   };
 
   // start measuring only once
