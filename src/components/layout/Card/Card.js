@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useBetween } from "use-between";
-import rotateCard from "../../../shared/rotateCard";
 import "./Card.css";
 
+// correct choice point value
+const ADDED_POINTS = 10;
+// correct cards number required to win
+const REQUIRED_CARDS = 40;
 // current DOM nodes
 let currentCards = [];
 // current props from chosen cards
@@ -16,7 +19,7 @@ const clearCurrentChoice = () => {
   currentChoice = {};
 };
 
-// used to restart the game
+// used when restarting the game
 const clearWholeChoice = () => {
   clearCurrentChoice();
   result = [];
@@ -48,11 +51,17 @@ const useResult = () => {
 const useSharedResult = () => useBetween(useResult);
 
 const Card = props => {
+  const [ex, setEx] = props.exState;
+
   const { setWin, score, setScore, measuring, setMeasuring, setStatus } =
     useSharedResult();
 
+  const rotateCard = props.rotateCard;
+
   const currentChoiceHandler = e => {
     // start measuring time only after first card has been chosen in current game
+    // setEx(ex + 1);
+    // console.log(ex);
     if (!measuring) {
       setStatus("In progress...");
       setMeasuring(true);
@@ -74,16 +83,16 @@ const Card = props => {
     if (currData1 === currData2) {
       // update result
       result = [...result, ...currentCards];
-      setScore(score + 10);
+      setScore(score + ADDED_POINTS);
     } else {
       for (const card of currentCards) {
-        // rotate cards after a delay (800ms)
+        // rotate cards after a delay
         setTimeout(() => {
           rotateCard(card);
         }, 800);
         /*
-          unblock both cards after (delay + backup) time
-          to avoid clicking on cards during their' transitions
+          unblock cards after (delay + backup) time
+          to avoid clicking on cards during their transitions
         */
         setTimeout(() => {
           card.classList.toggle("Blocked");
@@ -93,7 +102,7 @@ const Card = props => {
 
     clearCurrentChoice();
 
-    if (result.length === 40) {
+    if (result.length === REQUIRED_CARDS) {
       setWin(true);
     }
   };

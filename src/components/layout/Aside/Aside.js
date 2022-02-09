@@ -1,6 +1,5 @@
 import React from "react";
 import { useSharedResult, clearWholeChoice } from "../Card/Card";
-import rotateCard from "../../../shared/rotateCard";
 import "./Aside.css";
 
 let time = 0;
@@ -9,8 +8,8 @@ let elapsedID;
 const Aside = props => {
   const {
     win,
-    score,
     setWin,
+    score,
     setScore,
     measuring,
     setMeasuring,
@@ -19,7 +18,11 @@ const Aside = props => {
   } = useSharedResult();
   const [attempt, setAttempt] = props.attemptState;
 
+  const rotateCard = props.rotateCard;
+
   const timeValue = document.querySelector(".Time__Value");
+  const cards = document.querySelectorAll(".Card");
+  const input = document.querySelector(".Input--Checkbox");
 
   if (win) {
     clearInterval(elapsedID);
@@ -28,7 +31,6 @@ const Aside = props => {
 
   const restartGame = () => {
     // re-rotate all that have been already chosen
-    const cards = document.querySelectorAll(".Card");
     cards.forEach(card => {
       if (card.classList.contains("Blocked")) {
         rotateCard(card);
@@ -37,7 +39,6 @@ const Aside = props => {
     });
 
     // reset points only if checkbox is checked
-    const input = document.querySelector(".Input--Checkbox");
     if (input.checked) {
       setScore(0);
     }
@@ -48,8 +49,9 @@ const Aside = props => {
     setMeasuring(false);
     elapsedID = false;
 
-    // clear current choice and result from current (aka previous) game
+    // clear choice before restarting the game
     clearWholeChoice();
+
     setStatus("Not playing");
     setAttempt(attempt + 1);
     setWin(false);
