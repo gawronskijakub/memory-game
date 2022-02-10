@@ -1,59 +1,52 @@
-import React, { useContext } from "react";
-import { useSharedResult, clearWholeChoice } from "../Card/Card";
-import { CardsContext } from "../Main/Main";
+import React from "react";
+import { clearWholeChoice } from "../Board/Board";
 import "./Aside.css";
 
 let time = 0;
 let elapsedID;
 
 const Aside = props => {
-  const {
-    win,
-    setWin,
-    score,
-    setScore,
-    measuring,
-    setMeasuring,
-    status,
-    setStatus
-  } = useSharedResult();
+  const [status, setStatus] = props.statusState;
+  const [measuring, setMeasuring] = props.measuringState;
+  const [win, setWin] = props.winState;
+  const [score, setScore] = props.scoreState;
   const [attempt, setAttempt] = props.attemptState;
 
-  const Cards = useContext(CardsContext);
-
-  const rotateCard = props.rotateCard;
-
   const timeValue = document.querySelector(".Time__Value");
-  const cards = document.querySelectorAll(".Card");
-  const input = document.querySelector(".Input--Checkbox");
 
   if (win) {
     clearInterval(elapsedID);
-    setStatus("Finished!");
   }
 
   const restartGame = () => {
+    const cards = document.querySelectorAll(".Card");
     // re-rotate all that have been already chosen
     cards.forEach(card => {
       if (card.classList.contains("Blocked")) {
-        rotateCard(card);
+        props.rotateCard(card);
         card.classList.toggle("Blocked");
       }
     });
 
     // reset points only if checkbox is checked
-    if (input.checked) {
+    const resetPoints = document.getElementById("Reset-Points");
+    if (resetPoints.checked) {
       setScore(0);
     }
+
+    // clear
+    clearWholeChoice();
 
     // reset time measuring
     time = 0;
     timeValue.textContent = "0 seconds";
+    /*
+      NEEDED FIX:
+      restarting the game causes timer to start automatically
+      (loop inside board - !measuring)
+    */
     setMeasuring(false);
     elapsedID = false;
-
-    // clear choice before restarting the game
-    clearWholeChoice();
 
     setStatus("Not playing");
     setAttempt(attempt + 1);
@@ -61,15 +54,14 @@ const Aside = props => {
   };
 
   const updateTime = () => {
-    timeValue.textContent = `${time} seconds`;
-    time++;
-    
+    timeValue.textContent = `${time.toFixed(1)} seconds`;
+    time += 0.1;
   };
 
   // start measuring only once
   if (measuring && !elapsedID) {
     updateTime();
-    elapsedID = setInterval(updateTime, 1000);
+    elapsedID = setInterval(updateTime, 100);
   }
 
   return (
@@ -84,12 +76,7 @@ const Aside = props => {
       <p className="Attempts__Value">{attempt}</p>
       <label htmlFor="Reset-Points" className="Label">
         Reset points after restart?
-        <input
-          type="checkbox"
-          id="Reset-Points"
-          className="Input--Checkbox"
-          key={attempt}
-        />
+        <input type="checkbox" id="Reset-Points" key={attempt} />
       </label>
       <button onClick={restartGame} className="Button" id="Restart-Game">
         Restart game

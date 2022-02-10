@@ -1,20 +1,18 @@
-import React, { createContext, useState } from "react";
+import React, { useState } from "react";
 import Board from "../Board/Board";
 import Aside from "../Aside/Aside";
 import "./Main.css";
 
-export const CardsContext = createContext([]);
-const CardsProvider = CardsContext.Provider;
-
 const Main = () => {
   // attempt state declared here to re-shuffle the Board every time game is restarted
-  const [attempt, setAttempt] = useState(1);
+  const attemptState = useState(1);
+  const winState = useState(false);
+  const scoreState = useState(0);
+  const measuringState = useState(false);
+  const statusState = useState("Not playing");
 
   const rotateCard = e => {
-    /*
-      assignment used to distinguish between
-      clicking a card and rotating it after a wrong choice
-    */
+    // check whether an actual card has been selected
     const card = e.target ? e.target.parentNode : e;
 
     if (card.className.includes("Card")) {
@@ -26,10 +24,21 @@ const Main = () => {
 
   return (
     <main className="Main">
-      <CardsProvider value={[]}>
-        <Board rotateCard={rotateCard} />
-        <Aside rotateCard={rotateCard} attemptState={[attempt, setAttempt]} />
-      </CardsProvider>
+      <Board
+        rotateCard={rotateCard}
+        scoreState={scoreState}
+        winState={winState}
+        measuringState={measuringState}
+        statusState={statusState}
+      />
+      <Aside
+        rotateCard={rotateCard}
+        scoreState={scoreState}
+        attemptState={attemptState}
+        winState={winState}
+        measuringState={measuringState}
+        statusState={statusState}
+      />
     </main>
   );
 };
