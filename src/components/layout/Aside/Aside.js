@@ -18,7 +18,7 @@ const Aside = props => {
     clearInterval(elapsedID);
   }
 
-  const restartGame = () => {
+  const resetGame = () => {
     const cards = document.querySelectorAll(".Card");
     // re-rotate all that have been already chosen
     cards.forEach(card => {
@@ -46,11 +46,15 @@ const Aside = props => {
       (loop inside board - !measuring)
     */
     setMeasuring(false);
+    clearInterval(elapsedID);
     elapsedID = false;
 
     setStatus("Not playing");
     setAttempt(attempt + 1);
-    setWin(false);
+    console.log(win);
+    if (win) {
+      setWin(false);
+    }
   };
 
   const updateTime = () => {
@@ -78,7 +82,7 @@ const Aside = props => {
         Reset points after restart?
         <input type="checkbox" id="Reset-Points" key={attempt} />
       </label>
-      <button onClick={restartGame} className="Button" id="Restart-Game">
+      <button onClick={resetGame} className="Button" id="Restart-Game">
         Restart game
       </button>
     </aside>

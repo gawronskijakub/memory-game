@@ -8,6 +8,13 @@ const Main = () => {
   const attemptState = useState(1);
   const winState = useState(false);
   const scoreState = useState(0);
+  /*
+    measuring:
+    0 => initial state - game not started
+    1 => game started
+    2 => reset game, but do not start it
+    3 => game finished
+  */
   const measuringState = useState(false);
   const statusState = useState("Not playing");
 

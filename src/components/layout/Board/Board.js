@@ -3,7 +3,7 @@ import Card from "../Card/Card";
 import "./Board.css";
 
 // cards number required to win
-const REQUIRED_CARDS = 40;
+const REQUIRED_CARDS = 10;
 // correct choice reward
 const ADDED_POINTS = 10;
 // currently chosen cards' props
@@ -33,9 +33,8 @@ const Board = props => {
   const [, setWin] = props.winState;
   const [score, setScore] = props.scoreState;
 
-  const [shuffled, setShuffled] = useState(false);
   const [cards, setCards] = useState([]);
-  // current props from chosen cards
+  const [shuffled, setShuffled] = useState(false);
 
   let data = 1;
 
@@ -72,7 +71,6 @@ const Board = props => {
     const card = e.target.parentNode;
     currentCards.push(card);
     currentChoice[card.id] = card.dataset.pair;
-    console.log(currentChoice);
 
     // block cards after choosing to disable pointer-events
     card.classList.toggle("Blocked");
@@ -116,7 +114,7 @@ const Board = props => {
 
   // do not re-fill and re-shuffle the Board on every re-render
   if (!shuffled) {
-    fillBoard(cards, 40);
+    fillBoard(cards, 10);
     setCards(shuffleBoard(cards));
     setShuffled(true);
   }
