@@ -1,24 +1,80 @@
-import React from "react";
+import React, { useState, useRef, useCallback } from "react";
+import { clear } from "use-between";
 import { clearWholeChoice } from "../Board/Board";
 import "./Aside.css";
 
 let time = 0;
-let elapsedID;
 
 const Aside = props => {
-  const [status, setStatus] = props.statusState;
-  const [measuring, setMeasuring] = props.measuringState;
-  const [win, setWin] = props.winState;
-  const [score, setScore] = props.scoreState;
-  const [attempt, setAttempt] = props.attemptState;
+  const [attempt, setAttempt] = props.attempt;
+  const [measuring, setMeasuring] = props.measuring;
+  const score = props.score;
+  const status = props.status;
+  const resetGame = props.resetGame;
 
-  const timeValue = document.querySelector(".Time__Value");
+  const intervalRef = useRef(null);
 
-  if (win) {
-    clearInterval(elapsedID);
+  let statusText;
+  switch (status) {
+    case 0:
+      statusText = "Not playing";
+      break;
+    case 1:
+      statusText = "In game...";
+      break;
+    case 2:
+      statusText = "Finished!";
+      break;
+    default:
+      statusText = "Not playing";
   }
 
-  const resetGame = () => {
+  const updateTime = () => {
+    const timeValue = document.querySelector(".Time__Value");
+    timeValue.textContent = `${time.toFixed(1)} seconds`;
+    time += 0.1;
+  };
+
+  // memoizing time interval with useRef & useCallback thanks to:
+  // https://medium.com/@sdolidze/the-iceberg-of-react-hooks-af0b588f43fb
+  const startTimer = useCallback(() => {
+    if (intervalRef.current !== null) {
+      return;
+    }
+
+    intervalRef.current = setInterval(updateTime, 100);
+  }, []);
+
+  const stopTimer = useCallback(() => {
+    if (intervalRef.current === null) {
+      return;
+    }
+
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  }, []);
+
+  const adjustSettings = () => {
+    const resetPoints = document.getElementById("Reset-Points");
+    // run reset state function from Main
+    if (resetPoints.checked) {
+      resetGame(true);
+    } else {
+      resetGame();
+    }
+
+    // reset time measuring
+    stopTimer();
+    document.querySelector(".Time__Value").textContent = "0 seconds";
+
+    // increment attempt value
+    setAttempt(attempt + 1);
+
+    clearWholeChoice();
+
+    time = 0;
+    // timeValue.textContent = "0 seconds";
+
     const cards = document.querySelectorAll(".Card");
     // re-rotate all that have been already chosen
     cards.forEach(card => {
@@ -27,45 +83,12 @@ const Aside = props => {
         card.classList.toggle("Blocked");
       }
     });
-
-    // reset points only if checkbox is checked
-    const resetPoints = document.getElementById("Reset-Points");
-    if (resetPoints.checked) {
-      setScore(0);
-    }
-
-    // clear
-    clearWholeChoice();
-
-    // reset time measuring
-    time = 0;
-    timeValue.textContent = "0 seconds";
-    /*
-      NEEDED FIX:
-      restarting the game causes timer to start automatically
-      (loop inside board - !measuring)
-    */
-    setMeasuring(false);
-    clearInterval(elapsedID);
-    elapsedID = false;
-
-    setStatus("Not playing");
-    setAttempt(attempt + 1);
-    console.log(win);
-    if (win) {
-      setWin(false);
-    }
   };
 
-  const updateTime = () => {
-    timeValue.textContent = `${time.toFixed(1)} seconds`;
-    time += 0.1;
-  };
-
-  // start measuring only once
-  if (measuring && !elapsedID) {
-    updateTime();
-    elapsedID = setInterval(updateTime, 100);
+  if (measuring) {
+    startTimer();
+  } else {
+    stopTimer();
   }
 
   return (
@@ -73,7 +96,7 @@ const Aside = props => {
       <p className="Score">Score:</p>
       <p className="Score__Value">{score}</p>
       <p className="Status">Status:</p>
-      <p className="Status__Value">{status}</p>
+      <p className="Status__Value">{statusText}</p>
       <p className="Time">Time:</p>
       <p className="Time__Value">0 seconds</p>
       <p className="Attempts">Current attempt:</p>
@@ -82,7 +105,7 @@ const Aside = props => {
         Reset points after restart?
         <input type="checkbox" id="Reset-Points" key={attempt} />
       </label>
-      <button onClick={resetGame} className="Button" id="Restart-Game">
+      <button onClick={adjustSettings} className="Button" id="Restart-Game">
         Restart game
       </button>
     </aside>

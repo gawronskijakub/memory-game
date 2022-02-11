@@ -3,20 +3,44 @@ import Board from "../Board/Board";
 import Aside from "../Aside/Aside";
 import "./Main.css";
 
+// correct choice reward
+const ADDED_POINTS = 10;
+
 const Main = () => {
-  // attempt state declared here to re-shuffle the Board every time game is restarted
-  const attemptState = useState(1);
-  const winState = useState(false);
-  const scoreState = useState(0);
+  const [attempt, setAttempt] = useState(1);
+  const [score, setScore] = useState(0);
   /*
-    measuring:
-    0 => initial state - game not started
-    1 => game started
-    2 => reset game, but do not start it
-    3 => game finished
+    status values:
+    0 => "Not playing"
+    1 => "In game..."
+    2 => "Finished"
   */
-  const measuringState = useState(false);
-  const statusState = useState("Not playing");
+  const [status, setStatus] = useState(0);
+  const [measuring, setMeasuring] = useState(false);
+
+  const addScore = () => {
+    console.log("correct");
+    setScore(score => score + 10);
+  };
+
+  const startGame = () => {
+    setStatus(1);
+    setMeasuring(true);
+  };
+
+  const resetGame = (resetPoints = false) => {
+    // reset points only if checkbox is checked
+    if (resetPoints) {
+      setScore(0);
+    }
+    setStatus(0);
+    setMeasuring(false);
+  };
+
+  const endGame = () => {
+    setStatus(2);
+    setMeasuring(false);
+  };
 
   const rotateCard = e => {
     // check whether an actual card has been selected
@@ -33,18 +57,19 @@ const Main = () => {
     <main className="Main">
       <Board
         rotateCard={rotateCard}
-        scoreState={scoreState}
-        winState={winState}
-        measuringState={measuringState}
-        statusState={statusState}
+        attempt={attempt}
+        addScore={addScore}
+        endGame={endGame}
+        startGame={startGame}
+        measuring={[measuring, setMeasuring]}
       />
       <Aside
+        attempt={[attempt, setAttempt]}
         rotateCard={rotateCard}
-        scoreState={scoreState}
-        attemptState={attemptState}
-        winState={winState}
-        measuringState={measuringState}
-        statusState={statusState}
+        score={score}
+        resetGame={resetGame}
+        status={status}
+        measuring={[measuring, setMeasuring]}
       />
     </main>
   );

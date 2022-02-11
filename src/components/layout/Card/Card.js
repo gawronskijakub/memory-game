@@ -10,10 +10,10 @@ const Card = props => {
         props.onClick[1](e);
       }}
       id={props.id}
-      data-pair={props.data}
+      data-pair={props.pair}
     >
       <div className="Card__Side Card__Side--Back Active"></div>
-      <div className="Card__Side Card__Side--Front">{props.data}</div>
+      <div className="Card__Side Card__Side--Front">{props.pair}</div>
     </div>
   );
 };

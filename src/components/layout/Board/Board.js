@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../Card/Card";
 import "./Board.css";
 
 // cards number required to win
 const REQUIRED_CARDS = 10;
-// correct choice reward
-const ADDED_POINTS = 10;
 // currently chosen cards' props
 let currentChoice = {};
 
@@ -26,31 +24,34 @@ export const clearWholeChoice = () => {
   result = [];
 };
 
+// let cards = [];
+
 const Board = props => {
   const rotateCard = props.rotateCard;
-  const [measuring, setMeasuring] = props.measuringState;
-  const [, setStatus] = props.statusState;
-  const [, setWin] = props.winState;
-  const [score, setScore] = props.scoreState;
-
-  const [cards, setCards] = useState([]);
+  const addScore = props.addScore;
+  const attempt = props.attempt;
+  const [measuring, setMeasuring] = props.measuring;
+  const startGame = props.startGame;
+  const endGame = props.endGame;
   const [shuffled, setShuffled] = useState(false);
+  const [cards, setCards] = useState([]);
 
-  let data = 1;
+  // let cards = [];
+  let pair = 1;
 
   const fillBoard = (arr, size) => {
     for (let i = 1; i <= size; i++) {
       arr.push(
         <Card
           key={i}
-          data={data}
+          pair={pair}
           id={i}
           onClick={[rotateCard, currentChoiceHandler]}
         />
       );
 
       if (i % 2 === 0) {
-        data++;
+        pair++;
       }
     }
   };
@@ -63,11 +64,11 @@ const Board = props => {
   };
 
   const currentChoiceHandler = e => {
-    // start measuring time only after first card has been chosen in current game
+    // start the game once after first card has been chosen
     if (!measuring) {
-      setStatus("In progress...");
-      setMeasuring(true);
+      startGame();
     }
+
     const card = e.target.parentNode;
     currentCards.push(card);
     currentChoice[card.id] = card.dataset.pair;
@@ -82,12 +83,12 @@ const Board = props => {
   };
 
   const check = () => {
-    const [currData1, currData2] = Object.values(currentChoice);
-    // check if corresponding data attributes are equal
-    if (currData1 === currData2) {
+    const [currPair1, currPair2] = Object.values(currentChoice);
+    // check if corresponding pair attributes are equal
+    if (currPair1 === currPair2) {
       // update result
       result = [...result, ...currentCards];
-      setScore(score + ADDED_POINTS);
+      addScore();
     } else {
       for (const card of currentCards) {
         // rotate cards after a delay
@@ -107,17 +108,20 @@ const Board = props => {
     clearCurrentChoice();
 
     if (result.length === REQUIRED_CARDS) {
-      setWin(true);
-      setStatus("Finished!");
+      endGame();
     }
   };
 
-  // do not re-fill and re-shuffle the Board on every re-render
   if (!shuffled) {
     fillBoard(cards, 10);
+    // cards = shuffleBoard(cards);
     setCards(shuffleBoard(cards));
     setShuffled(true);
   }
+
+  useEffect(() => {
+    setCards(shuffleBoard(cards));
+  }, [attempt]);
 
   return <section className="Board">{cards}</section>;
 };
