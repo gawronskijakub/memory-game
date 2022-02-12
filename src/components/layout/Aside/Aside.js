@@ -1,19 +1,13 @@
-import React, { useState, useRef, useCallback } from "react";
-import { clear } from "use-between";
-import { clearWholeChoice } from "../Board/Board";
+import React, { useRef, useCallback } from "react";
 import "./Aside.css";
 
-let time = 0;
-
 const Aside = props => {
-  const [attempt, setAttempt] = props.attempt;
-  const [measuring, setMeasuring] = props.measuring;
-  const score = props.score;
-  const status = props.status;
-  const resetGame = props.resetGame;
+  const [attempt, score, status, measuring] = props.state;
+  const resetGame = props.game;
 
   const intervalRef = useRef(null);
 
+  let time = 0;
   let statusText;
   switch (status) {
     case 0:
@@ -56,33 +50,14 @@ const Aside = props => {
 
   const adjustSettings = () => {
     const resetPoints = document.getElementById("Reset-Points");
-    // run reset state function from Main
-    if (resetPoints.checked) {
-      resetGame(true);
-    } else {
-      resetGame();
-    }
+    // resetGame from Main component
+    resetGame(resetPoints.checked);
 
     // reset time measuring
     stopTimer();
-    document.querySelector(".Time__Value").textContent = "0 seconds";
-
-    // increment attempt value
-    setAttempt(attempt + 1);
-
-    clearWholeChoice();
-
+    const timeValue = document.querySelector(".Time__Value");
+    timeValue.textContent = "0 seconds";
     time = 0;
-    // timeValue.textContent = "0 seconds";
-
-    const cards = document.querySelectorAll(".Card");
-    // re-rotate all that have been already chosen
-    cards.forEach(card => {
-      if (card.classList.contains("Blocked")) {
-        props.rotateCard(card);
-        card.classList.toggle("Blocked");
-      }
-    });
   };
 
   if (measuring) {

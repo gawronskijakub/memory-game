@@ -5,10 +5,6 @@ const Card = props => {
   return (
     <div
       className="Card"
-      onClick={e => {
-        props.onClick[0](e);
-        props.onClick[1](e);
-      }}
       id={props.id}
       data-pair={props.pair}
     >

@@ -7,20 +7,13 @@ import "./Main.css";
 const ADDED_POINTS = 10;
 
 const Main = () => {
+  const [status, setStatus] = useState(0);
   const [attempt, setAttempt] = useState(1);
   const [score, setScore] = useState(0);
-  /*
-    status values:
-    0 => "Not playing"
-    1 => "In game..."
-    2 => "Finished"
-  */
-  const [status, setStatus] = useState(0);
   const [measuring, setMeasuring] = useState(false);
 
   const addScore = () => {
-    console.log("correct");
-    setScore(score => score + 10);
+    setScore(score => score + ADDED_POINTS);
   };
 
   const startGame = () => {
@@ -28,13 +21,12 @@ const Main = () => {
     setMeasuring(true);
   };
 
-  const resetGame = (resetPoints = false) => {
+  const resetGame = resetPoints => {
     // reset points only if checkbox is checked
-    if (resetPoints) {
-      setScore(0);
-    }
+    setScore(resetPoints ? 0 : score);
     setStatus(0);
     setMeasuring(false);
+    setAttempt(attempt + 1);
   };
 
   const endGame = () => {
@@ -43,7 +35,7 @@ const Main = () => {
   };
 
   const rotateCard = e => {
-    // check whether an actual card has been selected
+    // restarting the game rotates card and return card side instead of the card
     const card = e.target ? e.target.parentNode : e;
 
     if (card.className.includes("Card")) {
@@ -57,19 +49,13 @@ const Main = () => {
     <main className="Main">
       <Board
         rotateCard={rotateCard}
-        attempt={attempt}
-        addScore={addScore}
-        endGame={endGame}
-        startGame={startGame}
-        measuring={[measuring, setMeasuring]}
+        state={[attempt, measuring, addScore]}
+        game={[startGame, endGame]}
       />
       <Aside
-        attempt={[attempt, setAttempt]}
         rotateCard={rotateCard}
-        score={score}
-        resetGame={resetGame}
-        status={status}
-        measuring={[measuring, setMeasuring]}
+        state={[attempt, score, status, measuring]}
+        game={resetGame}
       />
     </main>
   );
