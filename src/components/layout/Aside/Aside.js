@@ -44,6 +44,9 @@ const Aside = props => {
       return;
     }
 
+    // intended assignment inside hook - time need to be restarted every new attempt
+    time = 0;
+
     clearInterval(intervalRef.current);
     intervalRef.current = null;
   }, []);
@@ -57,7 +60,6 @@ const Aside = props => {
     stopTimer();
     const timeValue = document.querySelector(".Time__Value");
     timeValue.textContent = "0 seconds";
-    time = 0;
   };
 
   if (measuring) {

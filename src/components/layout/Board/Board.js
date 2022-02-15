@@ -16,7 +16,6 @@ const Board = props => {
   const [currentChoice, setCurrentChoice] = useState({});
   const [currentCards, setCurrentCards] = useState([]);
 
-  // let cards = [];
   let pair = 1;
 
   const fillBoard = (arr, size) => {
@@ -37,20 +36,22 @@ const Board = props => {
   };
 
   const currentChoiceHandler = e => {
+    const card = e.target.parentNode;
+    /*
+      cards have pointer-events disabled after being chosen,
+      but click event is added on the Main component, so we need to check
+      whether user clicks second, separate card or Main
+      to prevent clicking the same card twice
+    */
+    if (!card.classList.contains("Card")) {
+      return;
+    }
+
     // start the game once after first card has been chosen
     if (!measuring) {
       startGame();
     }
 
-    const card = e.target.parentNode;
-    /*
-      cards have pointer-events disabled after being chosen,
-      hence we need to check, whether an element behind (Main) has not been clicked
-      uses to prevent any action if the same card has been clicked twice
-    */
-    if (!card.classList.contains("Card")) {
-      return;
-    }
     currentCards.push(card);
     currentChoice[card.id] = card.dataset.pair;
 
@@ -117,7 +118,7 @@ const Board = props => {
 
   // re-shuffle the board every new attempt
   useEffect(() => {
-    setCards(shuffleBoard(cards));
+    setCards(cards => shuffleBoard(cards));
     clearWholeChoice();
   }, [attempt]);
 
