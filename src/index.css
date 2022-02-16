@@ -1,3 +1,18 @@
+/* Fonts */
+
+/* Fredoka One */
+@font-face {
+  font-family: "Fredoka One";
+  src: local("FredokaOne"), url("./fonts/Fredoka_One/FredokaOne-Regular.ttf");
+}
+
+/* Open Sans Condensed Bold*/
+@font-face {
+  font-family: "Open Sans Condensed Bold";
+  src: local("OpenSansCondensed"), url("./fonts/Open_Sans_Condensed/OpenSansCondensed-Bold.ttf");
+}
+
+/* CSS Reset */
 *,
 *::before,
 *::after {
