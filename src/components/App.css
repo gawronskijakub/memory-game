@@ -1,6 +1,7 @@
 .App {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  background: radial-gradient(circle at right, #669FFE,#447FEB, #115EB8 70%, #004DA7 95%);
+  min-height: 100%;
+  background-image:
+    radial-gradient(circle at right, #669FFE,#447FEB, #115EB8 70%, #004DA7 95%);
 }

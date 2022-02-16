@@ -4,3 +4,9 @@
   gap: 2rem;
   padding: 2rem;
 }
+
+@media screen and (max-width: 75em) {
+  .Main {
+    flex-direction: column;
+  }
+}

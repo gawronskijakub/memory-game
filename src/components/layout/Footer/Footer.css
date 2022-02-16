@@ -3,8 +3,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #345345;
-  color: #ddd;
-  font-family: "Open Sans Condensed Bold", sans-serif;
+  padding-bottom: 2rem;
   letter-spacing: 1px;
+  font-family: "Open Sans Condensed Bold", sans-serif;
+  color: #fff;
 }
