@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/memory-game/static/css/main.9c1e6553.css",
+    "main.css": "/memory-game/static/css/main.759b0941.css",
     "main.js": "/memory-game/static/js/main.9ba6ec6f.js",
     "static/media/OpenSansCondensed-Bold.ttf": "/memory-game/static/media/OpenSansCondensed-Bold.d2563c0c5949dfd6941a.ttf",
     "static/media/FredokaOne-Regular.ttf": "/memory-game/static/media/FredokaOne-Regular.4aea26dd6637dfac0fac.ttf",
     "index.html": "/memory-game/index.html",
-    "main.9c1e6553.css.map": "/memory-game/static/css/main.9c1e6553.css.map",
+    "main.759b0941.css.map": "/memory-game/static/css/main.759b0941.css.map",
     "main.9ba6ec6f.js.map": "/memory-game/static/js/main.9ba6ec6f.js.map"
   },
   "entrypoints": [
-    "static/css/main.9c1e6553.css",
+    "static/css/main.759b0941.css",
     "static/js/main.9ba6ec6f.js"
   ]
 }
