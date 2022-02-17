@@ -117,6 +117,9 @@
 
   .Reset-Points, .Restart-Game {
     grid-column: 1 / -1;
-    /* margin-top: 1rem; */
+  }
+
+  .Reset-Points__Checkbox::before {
+    color: inherit;
   }
 }
