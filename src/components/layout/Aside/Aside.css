@@ -84,6 +84,8 @@
     align-content: center;
     grid-auto-rows: 50px;
     gap: .5rem 1rem;
+    color: #ddeeff;
+    text-shadow: 1px 1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000;
   }
 
   .Aside > p:nth-of-type(even) {
