@@ -3,7 +3,7 @@ import Card from "../Card/Card";
 import "./Board.css";
 
 // cards number required to win
-const REQUIRED_CARDS = 24;
+const REQUIRED_CARDS = 18;
 
 const Board = props => {
   const rotateCard = props.rotateCard;
