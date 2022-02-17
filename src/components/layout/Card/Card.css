@@ -29,8 +29,8 @@
 .Card__Side--Back::before {
   content: "";
   position: absolute;
-  width: 95%;
-  height: 95%;
+  width: 90%;
+  height: 90%;
   background-color: #a03046;
 }
 
@@ -47,7 +47,7 @@
   content: "";
   position: absolute;
   z-index: -1;
-  width: 95%;
-  height: 95%;
+  width: 90%;
+  height: 90%;
   background-color: #8f6e1d;
 }

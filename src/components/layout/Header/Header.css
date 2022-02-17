@@ -9,7 +9,10 @@
 
 .Header__Title {
   font-size: 3rem;
-  letter-spacing: 5px;
   font-family: "Fredoka One", cursive;
-  color: #bababa;
+  letter-spacing: 5px;
+  text-shadow: 4px 4px 4px #000;
+  text-align: center;
+  color: #cdcdcd;
+  padding: 0 1rem;
 }

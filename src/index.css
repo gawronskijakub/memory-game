@@ -58,11 +58,8 @@ a:link,
 a:visited,
 a:hover,
 a:active {
-  border: 2px solid #000;
-  border-radius: 5px;
   padding: 5px;
-  background-color: #aaa;
-  color: #000;
+  color: currentColor;
   text-decoration: none;
 }
 
@@ -70,4 +67,13 @@ a:active {
 
 #root {
   height: 100%;
+}
+
+.Bg-Light {
+  background-color: #aaa;
+}
+
+.Border-Fancy {
+  border: 2px solid #000;
+  border-radius: 10px 0;
 }

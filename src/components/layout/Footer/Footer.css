@@ -3,8 +3,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
   letter-spacing: 1px;
   font-family: "Open Sans Condensed Bold", sans-serif;
   color: #fff;
+}
+
+.Copyright__Link {
+  border-bottom: 2px solid currentColor;
+  border-radius: 5px 5px 0 0;
+  transition: background-color .2s;
+}
+
+.Copyright__Link:hover {
+  background-color: #000;
 }

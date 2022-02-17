@@ -5,15 +5,10 @@ const Footer = () => {
   return (
     <footer className="Footer">
       <p className="Copyright">
-        &copy;{" "}
         <a className="Copyright__Link" href="https://github.com/gawronskijakub">
           Jakub Gawronski
-        </a>{" "}
-        2022 | with ❤️ and{" "}
-        <a className="Copyright__Link" href="https://create-react-app.dev/">
-          create-react-app
-        </a>{" "}
-        | Under the MIT License
+        </a>
+        <span className="Copyright__Text"> | 2022</span>
       </p>
     </footer>
   );

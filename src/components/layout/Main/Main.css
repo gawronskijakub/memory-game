@@ -1,12 +1,14 @@
 .Main {
   flex-grow: 1;
   display: flex;
-  gap: 2rem;
+  gap: 7.5rem;
   padding: 2rem;
 }
 
-@media screen and (max-width: 75em) {
+@media screen and (max-width: 65em) {
   .Main {
     flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
   }
 }

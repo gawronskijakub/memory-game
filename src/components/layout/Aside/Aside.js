@@ -9,6 +9,7 @@ const Aside = props => {
 
   let time = 0;
   let statusText;
+
   switch (status) {
     case 0:
       statusText = "Not playing";
@@ -52,7 +53,7 @@ const Aside = props => {
   }, []);
 
   const adjustSettings = () => {
-    const resetPoints = document.getElementById("Reset-Points");
+    const resetPoints = document.getElementById("Reset-Checkbox");
     // resetGame from Main component
     resetGame(resetPoints.checked);
 
@@ -78,11 +79,17 @@ const Aside = props => {
       <p className="Time__Value">0 seconds</p>
       <p className="Attempts">Current attempt:</p>
       <p className="Attempts__Value">{attempt}</p>
-      <label htmlFor="Reset-Points" className="Label">
-        Reset points after restart?
-        <input type="checkbox" id="Reset-Points" key={attempt} />
+      <label htmlFor="Reset-Checkbox" className="Reset-Points">
+        <span className="Reset-Points__Text">Reset points after restart?</span>
+        <input
+          type="checkbox"
+          id="Reset-Checkbox"
+          className="Reset-Points__Checkbox Border-Fancy"
+          key={attempt}
+          // key's getting the value of the current attempt, so it becomes re-rendered and unchecked on new attempt
+        />
       </label>
-      <button onClick={adjustSettings} className="Button" id="Restart-Game">
+      <button onClick={adjustSettings} className="Restart-Game Border-Fancy">
         Restart game
       </button>
     </aside>
