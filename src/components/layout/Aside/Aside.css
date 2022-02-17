@@ -55,14 +55,15 @@
   justify-content: center;
   align-items: center;
   height: 4rem;
-  background-color: #bf0000;
   transition: transform .25s, background-color .25s;
+  background-color: #bf0000;
+  color: #ddeeff;
 }
 
 .Reset-Points__Checkbox:checked::before {
   content: "YES";
   background-color: #00bf00;
- transform: translateX(100%);
+  transform: translateX(100%);
 }
 
 .Restart-Game {
@@ -117,9 +118,5 @@
 
   .Reset-Points, .Restart-Game {
     grid-column: 1 / -1;
-  }
-
-  .Reset-Points__Checkbox::before {
-    color: inherit;
   }
 }
